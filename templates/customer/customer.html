@@ -1,0 +1,152 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Mijoz {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">ID: {{ customer.key }}</div>
+        </div>
+        <div class="card-body py-0">
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Ismi</th>
+                <th scope="col">Telefon raqam</th>
+                <th scope="col">Manzil</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="{% url 'update_customer' customer.key %}"><i class="fas fa-pen"></i></a></td>
+                <td>{{customer.first_name}}</td>
+                <td>+998 {{customer.phone_number}}</td>
+                <td>{{ customer.address }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>     
+    </div>
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Buyurtmalar</div>
+            </div>
+            <div class="card-body">
+              {% if orders %}
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sana va vaqt</th>
+                      <th scope="col">Miqdor</th>
+                      <th scope="col">Holat</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
+                    <tr>
+                      <td>{{order.created_at|date:'d.m.Y / h:i'}}</td>
+                      <td>
+                        {% if order.replacement_bottles %}
+                        {{ order.replacement_bottles }} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                        {% endif %}
+                        {% if order.new_bottles %}
+                        {{ order.new_bottles }} <i class="fas fa-plus"></i>
+                        {% endif %}
+                      </td>
+                      <td><span class="badge badge-success">{{order.get_status_display}}</span></td>
+                      <td><a href="{% url 'order' order.key %}"><i class="fas fa-chevron-circle-right"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <p class="text-center op-6">Ushbu mijoz hali buyurtma bermagan</p>
+              {% endif %}
+            </div>
+        </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-header">
+                <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                    <div class="card-title">Yangi buyurtma</div>
+                </div>
+            </div>
+            <div class="card-body px-5">
+              <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <div class="row">
+                      <div class="form-group col-lg-6">
+                        <label for="replacement_bottles">{{ form.replacement_bottles.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-sync-alt"></i></span>
+                            {{ form.replacement_bottles }}
+                        </div>
+                      </div>
+                      <div class="form-group col-lg-6">
+                        <label for="new_bottles">{{ form.new_bottles.label }}</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                          {{ form.new_bottles }}
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="password">{{ form.destination.label }}</label>
+                        <div class="d-flex">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              Doimiy manzilga
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Boshqa
+                            </label>
+                          </div>
+                        </div>
+                        <div id="custom_destination" style="display: none;">
+                          {{ form.destination }}
+                          {{ form.geo_location }}
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="password">Yetkazish muddati</label>
+                        <div class="d-flex">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prefered_delivery" id="asap_delivery" checked>
+                            <label class="form-check-label" for="asap_delivery">
+                              Tezkor
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prefered_delivery" id="prefered_delivery_datetime">
+                            <label class="form-check-label" for="prefered_delivery_datetime">
+                              Boshqa vaqtda
+                            </label>
+                          </div>
+                        </div>
+                        <div id="custom_destination" style="display: none;">
+                          {{ form.preferred_delivery_datetime }} 
+                        </div>               
+                      </div>
+                      <button type="submit" class="btn btn-primary">Saqlash</button>
+                    </div>
+                  </div>
+              </div>    
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}

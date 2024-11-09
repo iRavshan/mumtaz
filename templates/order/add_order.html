@@ -1,0 +1,77 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Mijozlar {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<form method="post" action="{% url 'add_order' %}">
+  {% csrf_token %}
+  <div class="row">
+    <div class="card mx-lg-3 col-lg-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                  <div class="row">
+                    <div class="form-group col-lg-6">
+                      <label for="replacement_bottles">{{ form.replacement_bottles.label }}</label>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-sync-alt"></i></span>
+                          {{ form.replacement_bottles }}
+                      </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                      <label for="new_bottles">{{ form.new_bottles.label }}</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                        {{ form.new_bottles }}
+                      </div>
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="password">{{ form.destination.label }}</label>
+                      <div class="d-flex">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                          <label class="form-check-label" for="flexRadioDefault1">
+                            Doimiy manzilga
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                          <label class="form-check-label" for="flexRadioDefault2">
+                            Boshqa
+                          </label>
+                        </div>
+                      </div>
+                      {{ form.destination }}
+                      {{ form.geo_location }}
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="password">Yetkazish muddati</label>
+                      <div class="d-flex">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="prefered_delivery" id="asap_delivery" checked>
+                          <label class="form-check-label" for="asap_delivery">
+                            Tezkor
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="prefered_delivery" id="prefered_delivery_datetime">
+                          <label class="form-check-label" for="prefered_delivery_datetime">
+                            Boshqa vaqtda
+                          </label>
+                        </div>
+                      </div>
+                      {{ form.preferred_delivery_datetime }}                    
+                    </div>
+                  </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <button class="btn btn-primary">Yaratish</button>
+    </div>
+  </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Buyurtmalar {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+            <div class="d-flex align-items-center">
+              <form class="input-group" method="get" action="{% url 'orders' %}">
+                <div class="input-group-prepend">
+                  <button type="submit" class="btn btn-search border">
+                    <i class="fa fa-search search-icon m-1"></i>
+                  </button>
+                </div>
+                <input type="text" name="search_key" id="search_key" placeholder="Buyurtma ID ni kiriting ..." class="form-control" value="{{ request.GET.search_key }}">
+              </form>
+            </div>
+          </div>
+      </div>
+        <div class="card-body px-0">
+          <div class="table-responsive">
+            {% if orders %}
+            <table class="table table-striped align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Telefon raqam</th>
+                  <th scope="col">Mijoz</th>
+                  <th scope="col">Sana va vaqt</th>
+                  <th scope="col">Miqdor</th>
+                  <th scope="col">Holat</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td><a href="#"><i class="fas fa-pen"></i></a></td>
+                  <th scope="row">{{order.key}}</th>
+                  <td>+998 {{order.customer.phone_number}}</td>
+                  <td>{{order.customer.first_name}}</td>
+                  <td>{{order.created_at|date:'d-M, Y / h:i'}}</td>
+                  <td>
+                    {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                    {{order.new_bottles}} <i class="fas fa-plus"></i> 
+                  </td>
+                  <td><span class="badge badge-success">{{order.get_status_display}}</span></td>
+                  <td><a href="{% url 'order' order.key %}"><i class="fas fa-chevron-circle-right mx-2"></i></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <p class="text-center mt-4 op-6">Hech qanday buyurtma topilmadi</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}

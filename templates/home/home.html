@@ -1,0 +1,189 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Bosh sahifa {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div class="icon-big text-center icon-primary bubble-shadow-small">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Mijozlar</p>
+                <h4 class="card-title">{{ customers }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div class="icon-big text-center icon-info bubble-shadow-small">
+                <i class="fas fa-people-carry"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Kuryerlar</p>
+                <h4 class="card-title">{{ couriers }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                <i class="fas fa-user-tie"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers"> 
+                <p class="card-category">Xodimlar</p>
+                <h4 class="card-title">{{employees}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card card-round">
+        <div class="card-header">
+          <div class="card-head-row card-tools-still-right">
+            <div class="card-title">Yangi buyurtmalar</div>
+            <div class="card-tools">
+              <div class="dropdown">
+                <button
+                  class="btn btn-icon btn-clean me-0"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            {% if new_orders %}
+            <table class="table align-items-center mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Telefon raqam</th>
+                  <th scope="col">Mijoz</th>
+                  <th scope="col">Sana va vaqt</th>
+                  <th scope="col">Miqdor</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for new_order in new_orders %}
+                <tr>
+                  <th scope="row">{{new_order.key}}</th>
+                  <td>+998 {{new_order.customer.phone_number}}</td>
+                  <td>{{new_order.customer.first_name}}</td>
+                  <td>{{new_order.created_at|date:'d-M, h:i'}}</td>
+                  <td>
+                    {{new_order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                    {{new_order.new_bottles}} <i class="fas fa-plus"></i> 
+                  </td>
+                  <td><a href="{% url 'order' new_order.key %}"><i class="fas fa-chevron-circle-right mx-2"></i></a></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <p class="text-center mt-5 mb-5 op-7">Yangi buyurtmalar mavjud emas</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-primary card-round">
+        <div class="card-header">
+          <div class="card-head-row">
+            <div class="card-title">Yetkazildi</div>
+            <div class="card-tools">
+              <div class="dropdown">
+                <button
+                  class="btn btn-sm btn-label-light dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  Export
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Yuklab olish (.xlsx)</a>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="card-category">{% now "d-M, Y" %}</div>
+        </div>
+        <div class="card-body pb-0">
+          <div class="mb-4 mt-2">
+            <h1>{{delivered_orders}} ta</h1>
+          </div>
+        </div>
+      </div>
+      <div class="card card-round card-success bg-success2">
+        <div class="card-header">
+          <div class="card-head-row">
+            <div class="card-title">Yetkazilmoqda</div>
+            <div class="card-tools">
+              <div class="dropdown">
+                <button
+                  class="btn btn-sm btn-label-light dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  Export
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Yuklab olish (.xlsx)</a>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="card-category">{{ on_road_couriers }} ta yetkazuvchi</div>
+        </div>
+        <div class="card-body pb-0">
+          <div class="mb-4 mt-2">
+            <h1>{{delivering_orders}} ta</h1>
+          </div>
+        </div>
+       </div>
+    </div>
+  </div>
+{% endblock content %}

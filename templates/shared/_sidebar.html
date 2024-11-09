@@ -1,0 +1,51 @@
+{% load static %}
+<div class="sidebar" data-background-color="dark">
+  <div class="sidebar-logo">
+    <div class="logo-header" data-background-color="dark">
+      <a href="{% url 'home' %}" class="logo">
+        <img src="{% static '/img/kaiadmin/logo_light.svg' %}" alt="navbar brand" class="navbar-brand" height="20"/>
+      </a>
+      <div class="nav-toggle">
+        <button class="btn btn-toggle toggle-sidebar">
+          <i class="gg-menu-right"></i>
+        </button>
+        <button class="btn btn-toggle sidenav-toggler">
+          <i class="gg-menu-left"></i>
+        </button>
+      </div>
+      <button class="topbar-toggler more">
+        <i class="gg-more-vertical-alt"></i>
+      </button>
+    </div>
+  </div>
+  <div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+      <ul class="nav nav-secondary">
+        <li class="nav-item">
+          <a href="{% url 'home' %}">
+            <i class="fas fa-home"></i>
+            <p>Bosh sahifa</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'orders' %}">
+            <i class="fas fa-tint"></i>
+            <p>Buyurtmalar</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'couriers' %}">
+            <i class="fas fa-people-carry"></i>
+            <p>Kuryerlar</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'customers' %}">
+            <i class="fas fa-users"></i>
+            <p>Mijozlar</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

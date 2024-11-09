@@ -1,0 +1,85 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Kuryer {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-profile">
+      <div class="card-body py-3">
+        <div class="user-profile text-center">
+          <div class="name"><b>{{ courier.first_name }} {{ courier.last_name }}</b></div>
+          <div class="job mb-2">{{ courier.key }}</div>
+          <span class="badge badge-success">yo'lda</span>
+        </div>
+      </div>
+      <div class="card-footer py-1">
+        <div class="row user-stats text-center">
+          <div class="col">
+            <div class="number">{{ delivered_bottles }} <i class="fas fa-tint"></i> / {{ delivered_orders.count }}</div>
+            <div class="title">Yetkazildi</div>
+          </div>
+          <div class="col">
+            <div class="number">{{ assigned_bottles }} <i class="fas fa-tint"></i> / {{ assigned_orders.count }}</div>
+            <div class="title">Biriktirilgan</div>
+          </div>
+          <div class="col">
+            <div class="number">{{ courier.payload }} <i class="fas fa-tint"></i></div>
+            <div class="title">Qolgan yuk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Suvni yuklash</div>
+      </div>
+      <div class="card-body">
+        <form action="{% url 'courier' courier.key %}" method="post" class="form">
+          {% csrf_token %}
+          {{ lade_form.payload }}
+
+          {% if lade_form.errors %}
+            <div class="alert alert-danger mt-2">
+              {% for error in lade_form.errors.values %}
+                  <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <button type="submit" name="lade_submit" class="btn btn-primary" onclick="return confirm('Rostdan ham suv idishlarini yuklamoqchimisiz?');">
+            <i class="fas fa-dolly-flatbed me-2"></i>Yuklash
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Yukni qaytarish</div>
+      </div>
+      <div class="card-body">
+        <form action="{% url 'courier' courier.key %}" method="post" class="form">
+          {% csrf_token %}
+          {{ unlade_form.payload }}
+
+          {% if unlade_form.errors %}
+            <div class="alert alert-danger mt-2">
+              {% for error in unlade_form.errors.values %}
+                  <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <button type="submit" name="unlade_submit" class="btn btn-primary" onclick="return confirm('Rostdan ham suv idishlarini qaytarib olmoqchimisiz?');">
+            <i class="fas fa-truck-loading me-2"></i>Qaytarib olish
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

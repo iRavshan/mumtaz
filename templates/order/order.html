@@ -1,0 +1,117 @@
+{% extends '../shared/_base.html' %}
+{% block title %} Buyurtma {% endblock %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">ID: {{order.key}}</div>
+        </div>
+        <div class="card-body px-4">
+          <div class="row">
+            <div class="col-md-6 col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-2">
+                        <label for="customer_name">Mijozning ismi</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.customer.first_name}}</span>
+                        </div>                                
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="customer_phone_number">Telefon raqam</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">+998 {{order.customer.phone_number}}</span>
+                        </div>                          
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="customer_phone_number">Buyurtma miqdori</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                                {{order.new_bottles}} <i class="fas fa-plus mx-1"></i> 
+                            </span>
+                        </div>                          
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="customer_phone_number">Yaratilgan sana va vaqti</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.created_at|date:'d-M, Y / h:i'}}</span>
+                        </div>                          
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="customer_phone_number">Yetkazish vaqti</label>
+                        <div class="input-group mb-3">
+                          {% if order.asap_delivery %}
+                            <span class="input-group-text">Tezkor</span>
+                          {% else %}
+                            <span class="input-group-text">{{order.preferred_delivery_datetime|date:'d-M, Y / h:i'}}</span>
+                          {% endif %}
+                        </div>                          
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label for="customer_phone_number">Holati</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text badge-success text-white">{{order.get_status_display }}</span>
+                        </div>                          
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <h5 class="h5 mt-3"><b>Yetkazib berish</b></h5>
+                <div class="row">
+                  <div class="col-lg-7">
+                    <p><b>Manzil:</b> {{ order.destination }}</p>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.9010410595974!2d65.79401737580861!3d38.857622171732494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4ea70045836921%3A0x5b971f34d893f741!2sIT%20Klaster%20Academy.!5e0!3m2!1sen!2s!4v1729508609708!5m2!1sen!2s" width="650" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row form-group mt-5">
+                      {% if order.status == 'new' %}
+                      <span class="badge badge-warning mb-5">Buyurtma hali yetkazuvchiga biriktirilmagan</span>
+                      <form action="" method="post">
+                        {% csrf_token %}
+                        <label for="" class="form-label">{{ receive_form.courier.label }}</label>
+                        {{ receive_form.courier }}
+                        <button type="submit" class="btn btn-primary mt-4 form-control">Yetkazuvchiga biriktirish</button>
+                      </form>
+                      {% else %}
+                      <div class="form-group col-lg-6">
+                        <label for="customer_name">Qabul qilingan vaqt</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.received_at|date:'d-M, Y / h:i'}}</span>
+                        </div>                                
+                      </div>
+                      <div class="form-group col-lg-6">
+                        <label for="customer_name">Qabul qiluvchi</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.received_by.username}}</span>
+                        </div>                                
+                      </div>
+                      <div class="form-group">
+                        <label for="customer_name">Yetkazib beruvchi</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.courier.first_name}} {{order.courier.last_name}}</span>
+                        </div>                                
+                      </div>
+                      <div class="form-group">
+                        <label for="customer_name">Yetkazib berilgan vaqt</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">{{order.delivered_at|date:'d-M, Y / h:i'}}</span>
+                            <!--<span class="input-group-text bg-warning">Buyurtma hali yetkazilmagan</span>-->
+                        </div>                                
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-action py-4">
+          <a class="btn btn-primary btn-round" href="#"><i class="fas fa-pen me-2"></i>Tahrirlash</a>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}
