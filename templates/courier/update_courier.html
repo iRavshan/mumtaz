@@ -34,6 +34,20 @@
                         </div>    
                       {% endif %}
                     </div>
+                    <div class="form-group">
+                      <label for="phone_number">{{ form.phone_number.label }}</label>
+                      <div class="input-group">
+                        <span class="input-group-text">+998</span>
+                        {{ form.phone_number }}
+                      </div>
+                      {% if form.phone_number.errors %}
+                        <div class="alert alert-danger">
+                          {% for error in form.phone_number.errors %}
+                              <p>{{ error }}</p>
+                          {% endfor %}
+                        </div>    
+                      {% endif %}
+                    </div>
                   </div>
               </div>
           </div>
@@ -44,9 +58,9 @@
       <button class="btn btn-primary" type="submit">Yangilash</button>
     </div>
     <div class="col-lg-2 mx-lg-3">
-      <form action="{% url 'delete_courier' courier.key %}" method="post">
+      <form action="{% url 'delete_courier' courier.key %}" method="post" class="form">
         {% csrf_token %}
-        <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni o`chirmoqchimisiz?');">
+        <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni ochirmoqchimisiz?');">
           <i class="far fa-trash-alt me-2"></i>O'chirish
         </button>
       </form>

@@ -1,7 +1,7 @@
 from uuid import uuid4
 from django.db import models
 from common.models import BaseModel
-from common.generators import courier_key_generator
+from common.generators import courier_key_generator, courier_password_generator
 
 class Courier(BaseModel):
     id = models.UUIDField(primary_key=True, auto_created=True, default=uuid4, editable=False)
@@ -10,6 +10,8 @@ class Courier(BaseModel):
     last_name = models.CharField(max_length=50, null=False)
     photo_uri = models.URLField(null=True, blank=True)
     payload = models.PositiveIntegerField(default=0, null=False)
+    phone_number = models.CharField(max_length=12, null=False, unique=True)
+    password = models.CharField(max_length=8, null=False, auto_created=True, default=courier_password_generator)
     
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

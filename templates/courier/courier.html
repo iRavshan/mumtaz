@@ -9,8 +9,8 @@
       <div class="card-body py-3">
         <div class="user-profile text-center">
           <div class="name"><b>{{ courier.first_name }} {{ courier.last_name }}</b></div>
-          <div class="job mb-2">{{ courier.key }}</div>
-          <span class="badge badge-success">yo'lda</span>
+          <div class="job mb-2">+998 {{ courier.phone_number }}</div>
+          <span class="badge badge-info"> {{ courier.key }}</span>
         </div>
       </div>
       <div class="card-footer py-1">
@@ -80,6 +80,9 @@
         </form>
       </div>
     </div>
+  </div>
+  <div class="col-md-3">
+    <a href="{% url 'update_courier' courier.key %}" class="btn btn-primary btn-rounded"><i class="fas fa-pen me-2"></i>Tahrirlash</a>
   </div>
 </div>
 {% endblock content %}

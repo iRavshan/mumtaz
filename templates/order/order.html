@@ -11,100 +11,87 @@
         </div>
         <div class="card-body px-4">
           <div class="row">
-            <div class="col-md-6 col-lg-12">
-                <div class="row">
-                    <div class="form-group col-lg-2">
-                        <label for="customer_name">Mijozning ismi</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.customer.first_name}}</span>
-                        </div>                                
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="customer_phone_number">Telefon raqam</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">+998 {{order.customer.phone_number}}</span>
-                        </div>                          
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="customer_phone_number">Buyurtma miqdori</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">
-                                {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
-                                {{order.new_bottles}} <i class="fas fa-plus mx-1"></i> 
-                            </span>
-                        </div>                          
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="customer_phone_number">Yaratilgan sana va vaqti</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.created_at|date:'d-M, Y / h:i'}}</span>
-                        </div>                          
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="customer_phone_number">Yetkazish vaqti</label>
-                        <div class="input-group mb-3">
-                          {% if order.asap_delivery %}
-                            <span class="input-group-text">Tezkor</span>
-                          {% else %}
-                            <span class="input-group-text">{{order.preferred_delivery_datetime|date:'d-M, Y / h:i'}}</span>
-                          {% endif %}
-                        </div>                          
-                    </div>
-                    <div class="form-group col-lg-2">
-                        <label for="customer_phone_number">Holati</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text badge-success text-white">{{order.get_status_display }}</span>
-                        </div>                          
-                    </div>
-                </div>
+            <div class="col-lg-12">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Mijoz</th>
+                    <th scope="col">Telefon raqam</th>
+                    <th scope="col">Buyurtma miqdori</th>
+                    <th scope="col">Yaratilgan vaqt</th>
+                    <th scope="col">Yetkazish vaqti</th>
+                    <th scope="col">Holati</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="btn btn-link p-0" href="{% url 'customer' order.customer.key %}">{{order.customer.first_name }}</a></td>
+                    <td>+998 {{ order.customer.phone_number }}</td>
+                    <td>
+                      {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                      {{order.new_bottles}} <i class="fas fa-plus mx-1"></i> 
+                    </td>
+                    <td>{{order.created_at|date:'d-M, Y / h:i'}}</td>
+                    <td>
+                      {% if order.asap_delivery %}
+                        Tezkor
+                      {% else %}
+                        {{ order.preferred_delivery_datetime|date:'d-M, Y / h:i' }}
+                      {% endif %}
+                    </td>
+                    <td>
+                      <span class="badge badge-success text-white">{{order.get_status_display }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div class="col-lg-12">
-                <h5 class="h5 mt-3"><b>Yetkazib berish</b></h5>
-                <div class="row">
-                  <div class="col-lg-7">
-                    <p><b>Manzil:</b> {{ order.destination }}</p>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3106.9010410595974!2d65.79401737580861!3d38.857622171732494!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4ea70045836921%3A0x5b971f34d893f741!2sIT%20Klaster%20Academy.!5e0!3m2!1sen!2s!4v1729508609708!5m2!1sen!2s" width="650" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="row form-group mt-5">
-                      {% if order.status == 'new' %}
-                      <span class="badge badge-warning mb-5">Buyurtma hali yetkazuvchiga biriktirilmagan</span>
-                      <form action="" method="post">
-                        {% csrf_token %}
-                        <label for="" class="form-label">{{ receive_form.courier.label }}</label>
-                        {{ receive_form.courier }}
-                        <button type="submit" class="btn btn-primary mt-4 form-control">Yetkazuvchiga biriktirish</button>
-                      </form>
-                      {% else %}
-                      <div class="form-group col-lg-6">
-                        <label for="customer_name">Qabul qilingan vaqt</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.received_at|date:'d-M, Y / h:i'}}</span>
-                        </div>                                
-                      </div>
-                      <div class="form-group col-lg-6">
-                        <label for="customer_name">Qabul qiluvchi</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.received_by.username}}</span>
-                        </div>                                
-                      </div>
-                      <div class="form-group">
-                        <label for="customer_name">Yetkazib beruvchi</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.courier.first_name}} {{order.courier.last_name}}</span>
-                        </div>                                
-                      </div>
-                      <div class="form-group">
-                        <label for="customer_name">Yetkazib berilgan vaqt</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">{{order.delivered_at|date:'d-M, Y / h:i'}}</span>
-                            <!--<span class="input-group-text bg-warning">Buyurtma hali yetkazilmagan</span>-->
-                        </div>                                
-                      </div>
-                      {% endif %}
-                    </div>
-                  </div>
+              <h5 class="h5 mt-5 mb-4"><b>Yetkazib berish</b></h5>
+              <p class="mb-5">
+                <b>Manzil:</b> {{ order.destination }} 
+                <button type="button" class="btn btn-link p-1" data-toggle="modal" data-target="#openMap">
+                  <i class="fas fa-map-marked-alt"></i>
+                </button>
+              </p>
+              {% if order.status == 'new' %}
+              <span class="badge badge-warning mb-4">Buyurtma hali yetkazuvchiga biriktirilmagan</span>
+              <form action="{% url 'order' order.key %}" method="post" class="row mb-3">
+                {% csrf_token %}
+                <label for="courier" class="form-label">{{ receive_form.courier.label }}</label>
+                <div class="col-lg-4">
+                  {{ receive_form.courier }}
                 </div>
+                <div class="col-lg-4">
+                  <button type="submit" class="btn btn-primary form-control">Yetkazuvchiga biriktirish</button>
+                </div>
+              </form>
+              {% else %}
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Qabul qilingan vaqt</th>
+                    <th scope="col">Qabul qiluvchi</th>
+                    <th scope="col">Yetkazib beruvchi</th>
+                    <th scope="col">Yetkazib berilgan vaqt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ order.received_at|date:'d-M, Y / h:i' }}</td>
+                    <td>{{ order.received_by.username }}</td>
+                    <td><a class="btn btn-link p-0" href="{% url 'courier' order.courier.key %}">{{order.courier.first_name}} {{order.courier.last_name}}</a></td>
+                    <td>
+                      {% if order.status == 'delivered' %}
+                        {{ order.delivered_at|date:'d-M, Y / h:i' }}</span>
+                      {% else %}
+                        <span class="badge text-white badge-warning">Buyurtma hali yetkazilmagan</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -113,5 +100,31 @@
         </div>
       </div>
     </div>
+</div>
+
+<div class="modal fade" id="openMap">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Buyurtmani yetkazish manzili</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body p-0">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24025.57147967233!2d65.798144!3d38.82261809999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f4ea87cad95f181%3A0x3a5f471f190a03fc!2sNasaf%20Stadium!5e1!3m2!1sen!2s!4v1731213741995!5m2!1sen!2s" 
+                width="100%" height="500" style="border:0;" 
+                allowfullscreen="" loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Yopish</button>
+      </div>
+      
+    </div>
+  </div>
 </div>
 {% endblock content %}

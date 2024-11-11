@@ -17,16 +17,23 @@ class CreateCourierForm(forms.ModelForm):
                                                               'name': 'last_name',
                                                               'class': 'form-control',
                                                               'placeholder': 'Familiyani kiriting'}))
-    
+    phone_number = forms.CharField(label='Telefon raqam',
+                                   max_length=50,
+                                   required=True,
+                                   widget=forms.TextInput(attrs={'id': 'phone_number',
+                                                                 'name': 'phone_number',
+                                                                 'class': 'form-control',
+                                                                 'data-mask': '00 000-00-00',
+                                                                 'placeholder': '__ ___-__-__'}))
     class Meta:
         model = Courier
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'phone_number']
         
 
 class UpdateCourierForm(CreateCourierForm):
     class Meta:
         model = Courier
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'phone_number']
         
 
 class LadeForm(forms.Form):

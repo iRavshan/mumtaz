@@ -52,5 +52,5 @@ class ReceiveOrderForm(forms.Form):
                                      queryset=Courier.objects.all(),
                                      required=True,
                                      widget=forms.Select(attrs={'name': 'courier',
-                                                                      'id': 'courier',
-                                                                      'class': 'form-select form-control'}))
+                                                                'id': 'courier',
+                                                                'class': 'form-select form-control'}))

@@ -3,6 +3,7 @@
 {% block content %}
 <!DOCTYPE html>
 {% load static %}
+{% load breadcrumbs %}
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -15,7 +16,7 @@
                             <i class="fa fa-search search-icon m-1"></i>
                           </button>
                         </div>
-                        <input type="text" name="search_key" id="search_key" placeholder="Kuryer ID raqamini kiriting ..." class="form-control" value="{{ request.GET.search_key }}">
+                        <input type="search" name="search_key" id="search_key" placeholder="Kuryer ID raqamini kiriting ..." class="form-control" value="{{ request.GET.search_key }}">
                       </form>
                       </div>
                     <div class="ms-md-auto">
@@ -31,7 +32,7 @@
                     <th scope="col"></th>
                     <th scope="col">ID</th>
                     <th scope="col">Ismi</th>
-                    <th scope="col">Familiyasi</th>
+                    <th scope="col">Telefon raqam</th>
                     <th scope="col">Batafsil</th>
                   </tr>
                 </thead>
@@ -40,8 +41,8 @@
                   <tr>
                     <td><a href="{% url 'update_courier' courier.key %}"><i class="fas fa-pen"></i></a></td>
                     <th>{{ courier.key }}</th>
-                    <td>{{ courier.first_name }}</td>
-                    <td>{{ courier.last_name }}</td>
+                    <td>{{ courier.first_name }} {{ courier.last_name }}</td>
+                    <td>+998 {{ courier.phone_number }}</td>
                     <td><a href="{% url 'courier' courier.key %}"><i class="fas fa-chevron-circle-right"></i></a></td>
                   </tr>
                   {% endfor %}

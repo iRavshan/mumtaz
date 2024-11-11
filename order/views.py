@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from datetime import datetime
+from datetime import datetime, timezone
 from .models import Order
 from .forms import CreateOrderForm, ReceiveOrderForm
 
@@ -23,7 +23,7 @@ def order_view(request, order_key):
             courier = receive_form.cleaned_data['courier']
             order.courier = courier
             order.received_by = request.user
-            order.received_at = datetime.now()
+            order.received_at = timezone.now()
             order.status = 'received'
             order.save()     
 

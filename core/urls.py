@@ -11,6 +11,8 @@ urlpatterns = [
     path('customers/', include('customer.urls')),
     path('couriers/', include('courier.urls')),
     path('robots.txt', robots_txt, name='robots_txt'),
+    
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
