@@ -16,10 +16,7 @@ class Order(BaseModel):
     
     replacement_bottles = models.PositiveSmallIntegerField(default=0, null=False, validators=[MinValueValidator(0)])
     new_bottles = models.PositiveSmallIntegerField(default=0, null=False, validators=[MinValueValidator(0)])
-    
-    destination = models.CharField(max_length=200, null=False)
-    geo_location = models.URLField(null=True, blank=True)
-    
+
     received_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     received_at = models.DateTimeField(null=True, blank=True)
     

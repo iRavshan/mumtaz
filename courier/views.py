@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import F, Sum
 
@@ -7,6 +8,7 @@ from .models import Courier
 from .forms import CreateCourierForm, UpdateCourierForm, LadeForm, UnladeForm
 
 
+@login_required
 def couriers_view(request):
     search_key = request.GET.get('search_key', '')
     if search_key:
@@ -16,6 +18,7 @@ def couriers_view(request):
     return render(request, 'courier/couriers.html', {'couriers': all_couriers})
 
 
+@login_required
 def courier_view(request, courier_key):
     courier = get_object_or_404(Courier, key=courier_key)
     
@@ -64,6 +67,7 @@ def courier_view(request, courier_key):
     return render(request, 'courier/courier.html', context)
 
 
+@login_required
 def add_courier_view(request):
     if request.method == 'POST':
         form = CreateCourierForm(request.POST)
@@ -77,6 +81,7 @@ def add_courier_view(request):
     return render(request, 'courier/add_courier.html', {'form': form})
 
 
+@login_required
 def update_courier_view(request, courier_key):
     courier = get_object_or_404(Courier, key=courier_key)
     if request.method == 'POST':
@@ -90,6 +95,7 @@ def update_courier_view(request, courier_key):
     return render(request, 'courier/update_courier.html', {'form': form, 'courier': courier})
 
 
+@login_required
 def delete_courier_view(request, courier_key):
     courier = get_object_or_404(Courier, key=courier_key)
     courier.delete()

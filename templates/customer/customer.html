@@ -87,7 +87,8 @@
             <div class="card-body px-5">
               <div class="row">
                   <div class="col-md-12 col-lg-12">
-                    <div class="row">
+                    <form class="row" method="post" action="{% url 'customer' customer.key %}">
+                      {% csrf_token %}
                       <div class="form-group col-lg-6">
                         <label for="replacement_bottles">{{ form.replacement_bottles.label }}</label>
                         <div class="input-group">
@@ -102,49 +103,10 @@
                           {{ form.new_bottles }}
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label for="password">{{ form.destination.label }}</label>
-                        <div class="d-flex">
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                            <label class="form-check-label" for="flexRadioDefault1">
-                              Doimiy manzilga
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                              Boshqa
-                            </label>
-                          </div>
-                        </div>
-                        <div id="custom_destination" style="display: none;">
-                          {{ form.destination }}
-                          {{ form.geo_location }}
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="password">Yetkazish muddati</label>
-                        <div class="d-flex">
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="prefered_delivery" id="asap_delivery" checked>
-                            <label class="form-check-label" for="asap_delivery">
-                              Tezkor
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="prefered_delivery" id="prefered_delivery_datetime">
-                            <label class="form-check-label" for="prefered_delivery_datetime">
-                              Boshqa vaqtda
-                            </label>
-                          </div>
-                        </div>
-                        <div id="custom_destination" style="display: none;">
-                          {{ form.preferred_delivery_datetime }} 
-                        </div>               
-                      </div>
-                      <button type="submit" class="btn btn-primary">Saqlash</button>
-                    </div>
+                      <button type="submit" class="btn btn-primary mt-4" onclick="return confirm('Rostdan ham ushbu buyurtmani yaratmoqchimisiz?');">
+                        Saqlash
+                      </button>
+                    </form>
                   </div>
               </div>    
           </div>

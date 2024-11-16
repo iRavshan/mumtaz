@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from datetime import datetime, timezone
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
 from .models import Order
 from .forms import CreateOrderForm, ReceiveOrderForm
 
 
+@login_required
 def orders_view(request):
     search_key = request.GET.get('search_key', '')
     if search_key:
@@ -13,6 +15,7 @@ def orders_view(request):
     return render(request, 'order/orders.html', {'orders': all_orders})
 
 
+@login_required
 def order_view(request, order_key):
     order = Order.objects.get(key=order_key)
     receive_form = ReceiveOrderForm()
@@ -23,7 +26,7 @@ def order_view(request, order_key):
             courier = receive_form.cleaned_data['courier']
             order.courier = courier
             order.received_by = request.user
-            order.received_at = timezone.now()
+            order.received_at = datetime.now()
             order.status = 'received'
             order.save()     
 
@@ -35,6 +38,7 @@ def order_view(request, order_key):
     return render(request, 'order/order.html', context)
 
 
+@login_required
 def add_order_view(request):
     if request.method == 'POST':
         form = CreateOrderForm(request.POST)
