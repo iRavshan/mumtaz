@@ -10,6 +10,7 @@ class Customer(BaseModel):
     phone_number = models.CharField(max_length=12, null=False, unique=True)
     address = models.CharField(max_length=200, null=False)
     geo_location = models.URLField(null=True)
+    telegram_id = models.CharField(unique=True, max_length=50, null=True, blank=True, editable=False)
     
     def __str__(self):
         return f'{self.key} - {self.first_name} - {self.phone_number}'

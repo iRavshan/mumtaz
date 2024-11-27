@@ -3,7 +3,7 @@
     <div class="main-header-logo">
       <div class="logo-header" data-background-color="dark">
         <a href="{% url 'home' %}" class="logo">
-          <img src="{% static '/img/kaiadmin/logo_light.svg' %}" alt="navbar brand" class="navbar-brand" height="20"/>
+          <img src="{% static '/img/mumtaz-logo.png' %}" alt="navbar brand" class="navbar-brand" height="20"/>
         </a>
         <div class="nav-toggle">
           <button class="btn btn-toggle toggle-sidebar">
@@ -50,7 +50,7 @@
                 <img src="{% static '/img/admin.png' %}" alt="..." class="avatar-img rounded-circle"/>
               </div>
               <span class="profile-username">
-                <span class="fw-bold">Admin</span>
+                <span class="fw-bold">{{ request.user.username }}</span>
               </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -61,7 +61,7 @@
                       <img src="{% static '/img/admin.png' %}" alt="image profile" class="avatar-img rounded"/>
                     </div>
                     <div class="u-text">
-                      <h4>Admin</h4>
+                      <h4>{{ request.user.username }}</h4>
                       <p class="text-muted">Mumtaz Water</p>
                     </div>
                   </div>

@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -46,6 +47,64 @@ class CourierViewSet(viewsets.ModelViewSet):
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    
+    @action(detail=False, methods=['get'], url_path='check-existence')
+    def check_existence(self, request):
+        phone_number = request.query_params.get('phone_number')
+        
+        if not phone_number:
+            return Response(
+                {"error": "Phone number is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        exists = Customer.objects.filter(phone_number=phone_number).exists()
+        if exists:
+            return Response(
+                {"message": "Customer exists in the database."},
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"message": "Customer does not exist."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+    
+    @action(detail=False, methods=['get'], url_path='check-telegram')
+    def check_telegram(self, request):
+        telegram_id = request.query_params.get('telegram_id')
+        if not telegram_id:
+            return Response({"error": "Telegram ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            customer = Customer.objects.get(telegram_id=telegram_id)
+            return Response(
+                {
+                    "message": "Customer is registered on Telegram.",
+                    "customer": {
+                        "id": customer.id,
+                        "first_name": customer.first_name,
+                        "phone_number": customer.phone_number,
+                        "address": customer.address,
+                    }
+                },
+                status=status.HTTP_200_OK
+            )
+        except Customer.DoesNotExist:
+            return Response({"message": "Customer is not registered on Telegram."}, status=status.HTTP_404_NOT_FOUND)
+    
+    
+    @action(detail=False, methods=['get'], url_path='active-orders')
+    def get_active_orders(self, request, pk=None):
+        customer = get_object_or_404(Customer, pk=pk)
+        undelivered_orders = Order.objects.filter(customer=customer, status__in=['new', 'received', 'delivering'])
+        
+        if not undelivered_orders.exists():
+            return Response({'detail': 'No undelivered orders found for this customer.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = OrderSerializer(undelivered_orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
 class OrderViewSet(viewsets.ModelViewSet):

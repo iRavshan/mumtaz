@@ -60,7 +60,7 @@
     <div class="col-lg-2 mx-lg-3">
       <form action="{% url 'delete_courier' courier.key %}" method="post" class="form">
         {% csrf_token %}
-        <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni ochirmoqchimisiz?');">
+        <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni ochirmoqchimisiz?'); ">
           <i class="far fa-trash-alt me-2"></i>O'chirish
         </button>
       </form>
