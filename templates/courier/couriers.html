@@ -32,6 +32,7 @@
                     <th scope="col"></th>
                     <th scope="col">ID</th>
                     <th scope="col">Ismi</th>
+                    <th scope="col">Mashina raqami</th>
                     <th scope="col">Telefon raqam</th>
                     <th scope="col"></th>
                   </tr>
@@ -42,6 +43,7 @@
                     <td><a href="{% url 'update_courier' courier.key %}"><i class="fas fa-pen"></i></a></td>
                     <th>{{ courier.key }}</th>
                     <td>{{ courier.first_name }} {{ courier.last_name }}</td>
+                    <td>{{ courier.car_number }}</td>
                     <td>+998 {{ courier.phone_number }}</td>
                     <td><a href="{% url 'courier' courier.key %}"><i class="fas fa-chevron-circle-right"></i></a></td>
                   </tr>

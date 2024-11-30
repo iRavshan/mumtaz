@@ -96,6 +96,14 @@ def update_courier_view(request, courier_key):
 
 
 @login_required
+def ban_courier_view(request, courier_key):
+    courier = get_object_or_404(Courier, key=courier_key)
+    courier.is_banned = True
+    courier.save()
+    return redirect('couriers')
+
+
+@login_required
 def delete_courier_view(request, courier_key):
     courier = get_object_or_404(Courier, key=courier_key)
     courier.delete()

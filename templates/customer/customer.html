@@ -22,7 +22,12 @@
             <tbody>
               <tr>
                 <td><a href="{% url 'update_customer' customer.key %}" data-toggle="tooltip" title="Tahrirlash"><i class="fas fa-pen"></i></a></td>
-                <td>{{ customer.first_name }}</td>
+                <td>
+                  {{ customer.first_name }}
+                  {% if customer.last_name %}
+                    {{ customer.last_name }}
+                  {% endif %}
+                </td>
                 <td>+998 {{customer.phone_number}}</td>
                 <td>{{ customer.address }} 
                   <a class="btn btn-link" href="{{ customer.geo_location }}" target="_blank">

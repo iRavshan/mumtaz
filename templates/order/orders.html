@@ -19,10 +19,10 @@
               </form>
             </div>
           </div>
-      </div>
+        </div>
         <div class="card-body px-0">
+          {% if searched_orders %}
           <div class="table-responsive">
-            {% if orders %}
             <table class="table table-striped align-items-center mb-0">
               <thead>
                 <tr>
@@ -37,7 +37,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for order in orders %}
+                {% for order in searched_orders %}
                 <tr>
                   <td><a href="#"><i class="fas fa-pen"></i></a></td>
                   <th scope="row">{{order.key}}</th>
@@ -54,10 +54,154 @@
                 {% endfor %}
               </tbody>
             </table>
-            {% else %}
-            <p class="text-center mt-4 op-6">Hech qanday buyurtma topilmadi</p>
-            {% endif %}
           </div>
+          {% else %}
+          <ul class="nav nav-pills nav-secondary px-4" id="pills-tab" role="tablist">
+            <li class="nav-item submenu" role="presentation">
+              <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Bugunlik</a>
+            </li>
+            <li class="nav-item submenu" role="presentation">
+              <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" tabindex="-1">Haftalik</a>
+            </li>
+            <li class="nav-item submenu" role="presentation">
+              <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" tabindex="-1">Oylik</a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3 mb-3" id="pills-tabContent">
+            <div class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+              <div class="table-responsive">
+                {% if orders_today %}
+                <div class="card-sub mb-5 fs-6">
+                  Bugun
+                  <code class="highlighter-rouge fw-bold">{{ orders_today|length }} ta</code> 
+                  buyurtma qabul qilingan
+                </div>
+                <table class="table table-striped align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Telefon raqam</th>
+                      <th scope="col">Mijoz</th>
+                      <th scope="col">Sana va vaqt</th>
+                      <th scope="col">Miqdor</th>
+                      <th scope="col">Holat</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders_today %}
+                    <tr>
+                      <td><a href="#"><i class="fas fa-pen"></i></a></td>
+                      <th scope="row">{{order.key}}</th>
+                      <td>+998 {{order.customer.phone_number}}</td>
+                      <td>{{order.customer.first_name}}</td>
+                      <td>{{order.created_at|date:'d-M, Y / h:i'}}</td>
+                      <td>
+                        {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                        {{order.new_bottles}} <i class="fas fa-plus"></i> 
+                      </td>
+                      <td><span class="badge badge-success">{{order.get_status_display}}</span></td>
+                      <td><a href="{% url 'order' order.key %}"><i class="fas fa-chevron-circle-right mx-2"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <p class="text-center mt-4 op-6">Hech qanday buyurtma topilmadi</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+              <div class="table-responsive">
+                {% if orders_this_week %}
+                <div class="card-sub mb-5 fs-6">
+                  Ushbu haftada
+                  <code class="highlighter-rouge fw-bold">{{ orders_this_week|length }} ta</code> 
+                  buyurtma qabul qilingan
+                </div>
+                <table class="table table-striped align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Telefon raqam</th>
+                      <th scope="col">Mijoz</th>
+                      <th scope="col">Sana va vaqt</th>
+                      <th scope="col">Miqdor</th>
+                      <th scope="col">Holat</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders_this_week %}
+                    <tr>
+                      <td><a href="#"><i class="fas fa-pen"></i></a></td>
+                      <th scope="row">{{order.key}}</th>
+                      <td>+998 {{order.customer.phone_number}}</td>
+                      <td>{{order.customer.first_name}}</td>
+                      <td>{{order.created_at|date:'d-M, Y / h:i'}}</td>
+                      <td>
+                        {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                        {{order.new_bottles}} <i class="fas fa-plus"></i> 
+                      </td>
+                      <td><span class="badge badge-success">{{order.get_status_display}}</span></td>
+                      <td><a href="{% url 'order' order.key %}"><i class="fas fa-chevron-circle-right mx-2"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <p class="text-center mt-4 op-6">Hech qanday buyurtma topilmadi</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+              <div class="table-responsive">
+                {% if orders_this_month %}
+                <div class="card-sub mb-5 fs-6">
+                  Ushbu oyda
+                  <code class="highlighter-rouge fw-bold">{{ orders_this_month|length }} ta</code> 
+                  buyurtma qabul qilingan
+                </div>
+                <table class="table table-striped align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Telefon raqam</th>
+                      <th scope="col">Mijoz</th>
+                      <th scope="col">Sana va vaqt</th>
+                      <th scope="col">Miqdor</th>
+                      <th scope="col">Holat</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders_this_month %}
+                    <tr>
+                      <td><a href="#"><i class="fas fa-pen"></i></a></td>
+                      <th scope="row">{{order.key}}</th>
+                      <td>+998 {{order.customer.phone_number}}</td>
+                      <td>{{order.customer.first_name}}</td>
+                      <td>{{order.created_at|date:'d-M, Y / h:i'}}</td>
+                      <td>
+                        {{order.replacement_bottles}} <i class="fas fa-sync-alt mx-1"></i> <span class="mx-2"></span>
+                        {{order.new_bottles}} <i class="fas fa-plus"></i> 
+                      </td>
+                      <td><span class="badge badge-success">{{order.get_status_display}}</span></td>
+                      <td><a href="{% url 'order' order.key %}"><i class="fas fa-chevron-circle-right mx-2"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                <p class="text-center mt-4 op-6">Hech qanday buyurtma topilmadi</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>

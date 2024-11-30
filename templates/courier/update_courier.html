@@ -6,7 +6,7 @@
 <form method="post" action="{% url 'update_courier' courier.key %}">
   {% csrf_token %}
   <div class="row">
-      <div class="card mx-lg-3 col-lg-4">
+      <div class="card mx-lg-3 col-lg-5">
           <div class="card-body mb-3">
               <div class="row">
                   <div class="col-md-12 col-lg-12">
@@ -48,22 +48,45 @@
                         </div>    
                       {% endif %}
                     </div>
+                    <div class="form-group">
+                      <label for="first_name">{{ form.car_number.label }}</label>
+                      {{ form.car_number }}
+                      {% if form.car_number.errors %}
+                        <div class="alert alert-danger">
+                          {% for error in form.car_number.errors %}
+                              <p>{{ error }}</p>
+                          {% endfor %}
+                        </div>    
+                      {% endif %}
+                    </div>
                   </div>
               </div>
           </div>
       </div>
   </div>
   <div class="row">
-    <div class="col-lg-1">
-      <button class="btn btn-primary" type="submit">Yangilash</button>
-    </div>
-    <div class="col-lg-2 mx-lg-3">
-      <form action="{% url 'delete_courier' courier.key %}" method="post" class="form">
-        {% csrf_token %}
-        <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni ochirmoqchimisiz?'); ">
-          <i class="far fa-trash-alt me-2"></i>O'chirish
-        </button>
-      </form>
+    <div class="col-lg-5">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-primary" type="submit">Yangilash</button>
+        </div>
+        <div class="col">
+          <form action="{% url 'ban_courier' courier.key %}" method="post" class="form">
+            {% csrf_token %}
+            <button class="btn btn-label-warning" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni bloklamoqchimisiz?'); ">
+              <i class="fas fa-ban me-2"></i>Bloklash
+            </button>
+          </form>
+        </div>
+        <div class="col">
+          <form action="{% url 'delete_courier' courier.key %}" method="post" class="form">
+            {% csrf_token %}
+            <button class="btn btn-label-danger" type="submit" onclick="return confirm('Rostdan ham ushbu kuryerni ochirmoqchimisiz?'); ">
+              <i class="far fa-trash-alt me-2"></i>O'chirish
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </form>

@@ -25,15 +25,23 @@ class CreateCourierForm(forms.ModelForm):
                                                                  'class': 'form-control',
                                                                  'data-mask': '00 000-00-00',
                                                                  'placeholder': '__ ___-__-__'}))
+    car_number = forms.CharField(label='Mashina raqami',
+                                 max_length=50,
+                                 required=True,
+                                 widget=forms.TextInput(attrs={'id': 'car_number',
+                                                               'name': 'car_number',
+                                                               'class': 'form-control',
+                                                               'data-mask': '00A000AA',
+                                                               'placeholder': '70A777AA'}))
     class Meta:
         model = Courier
-        fields = ['first_name', 'last_name', 'phone_number']
+        fields = ['first_name', 'last_name', 'phone_number', 'car_number']
         
 
 class UpdateCourierForm(CreateCourierForm):
     class Meta:
         model = Courier
-        fields = ['first_name', 'last_name', 'phone_number']
+        fields = ['first_name', 'last_name', 'phone_number', 'car_number']
         
 
 class LadeForm(forms.Form):
@@ -45,6 +53,7 @@ class LadeForm(forms.Form):
                                                                'type': 'number',
                                                                'min': '1',
                                                                'placeholder': 'Suv idishlari sonini kiriting'}))
+    
     
 class UnladeForm(LadeForm):
     pass    

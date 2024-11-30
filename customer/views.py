@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from customer.forms import CreateCustomerForm, UpdateCustomerForm
@@ -8,11 +9,26 @@ from .models import Customer
 
 @login_required
 def customers_view(request):
-    search_key = request.GET.get('search_key', '')
-    if search_key:
-        all_customers = Customer.objects.filter(phone_number=search_key)
-    else:
-        all_customers = Customer.objects.all()
+    
+    phone_number = request.GET.get('phone_number', '')
+    first_name = request.GET.get('first_name', '')
+    last_name = request.GET.get('last_name', '')
+    address = request.GET.get('address', '')
+    
+    all_customers = Customer.objects.all()
+    
+    if phone_number or first_name or last_name or address:
+        if phone_number:
+            all_customers = all_customers.filter(phone_number=phone_number)
+        if first_name:
+            first_name = first_name.lower().capitalize()
+            all_customers = all_customers.filter(first_name=first_name)  
+        if last_name:
+            last_name = last_name.lower().capitalize()
+            all_customers = all_customers.filter(last_name=last_name)
+        if address:
+            all_customers = all_customers.filter(address__icontains=address)     
+        
     return render(request, 'customer/customers.html', {'customers': all_customers})
 
 

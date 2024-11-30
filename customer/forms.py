@@ -10,6 +10,12 @@ class CreateCustomerForm(forms.ModelForm):
                                  widget=forms.TextInput(attrs={'id': 'first_name',
                                                                'class': 'form-control',
                                                                'placeholder': 'Ismni kiriting'}))
+    last_name = forms.CharField(label='Familiyasi (ixtiyoriy)',
+                                 max_length=50, 
+                                 required=False,
+                                 widget=forms.TextInput(attrs={'id': 'last_name',
+                                                               'class': 'form-control',
+                                                               'placeholder': 'Familiya'}))
     
     phone_number = forms.CharField(label='Telefon raqam', 
                                    max_length=20, 
@@ -34,11 +40,11 @@ class CreateCustomerForm(forms.ModelForm):
     
     class Meta:
         model = Customer
-        fields = ['first_name', 'phone_number', 'address', 'geo_location']
+        fields = ['first_name', 'last_name', 'phone_number', 'address', 'geo_location']
         
     
     
 class UpdateCustomerForm(CreateCustomerForm):
     class Meta:
         model = Customer
-        fields = ['phone_number', 'first_name', 'address', 'geo_location']
+        fields = ['phone_number', 'first_name', 'last_name', 'address', 'geo_location']

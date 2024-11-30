@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
+from django.utils.timezone import now
 from .models import Order
 from .forms import CreateOrderForm, ReceiveOrderForm
 
@@ -8,11 +9,26 @@ from .forms import CreateOrderForm, ReceiveOrderForm
 @login_required
 def orders_view(request):
     search_key = request.GET.get('search_key', '')
+    
     if search_key:
-        all_orders = Order.objects.filter(key=search_key)
+        searched_orders = Order.objects.filter(key=search_key)
+        context = {'searched_orders': searched_orders}
     else:
-        all_orders = Order.objects.all()
-    return render(request, 'order/orders.html', {'orders': all_orders})
+        today = now().date()
+        start_of_week = today - timedelta(days=today.weekday())  # Monday of the current week
+        start_of_month = today.replace(day=1)  # First day of the current month
+
+        orders_today = Order.objects.filter(created_at__date=today)
+        orders_this_week = Order.objects.filter(created_at__date__gte=start_of_week)
+        orders_this_month = Order.objects.filter(created_at__date__gte=start_of_month)
+        
+        context = {
+            'orders_today': orders_today,
+            'orders_this_week': orders_this_week,
+            'orders_this_month': orders_this_month
+        }
+    
+    return render(request, 'order/orders.html', context)
 
 
 @login_required
