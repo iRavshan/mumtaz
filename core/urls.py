@@ -10,6 +10,7 @@ urlpatterns = [
     path('orders/', include('order.urls')),
     path('customers/', include('customer.urls')),
     path('couriers/', include('courier.urls')),
+    path('user/', include('user.urls')),
     path('robots.txt', robots_txt, name='robots_txt'),
     
     path('api/', include('api.urls')),

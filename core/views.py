@@ -1,11 +1,12 @@
 from django.utils import timezone
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from customer.models import Customer
 from user.models import CustomUser
 from courier.models import Courier
 from order.models import Order
 
-
+@login_required
 def home(request):
     new_orders = Order.objects.filter(status='new')
     customers = Customer.objects.count()
